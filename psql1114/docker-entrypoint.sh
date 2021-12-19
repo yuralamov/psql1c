@@ -1,5 +1,7 @@
 #!/bin/bash
-# based on the https://github.com/sibsau/docker-postgres-pro-1c/blob/master/9.6/docker-entrypoint.sh
+# based on the https://github.com/sibsau/docker-postgres-pro-1c/blob/master/9.6/docker-entrypoint.sh  
+# & https://github.com/alexanderfefelov/docker-postgrespro-1c/blob/master/container/docker-entrypoint.sh  
+
 set -e
 
 # usage: file_env VAR [DEFAULT]
