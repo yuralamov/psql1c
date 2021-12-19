@@ -1,5 +1,8 @@
 # based on the
-# https://github.com/sibsau/docker-postgres-pro-1c/blob/master/9.6/Dockerfile
+# https://github.com/sibsau/docker-postgres-pro-1c/blob/master/9.6/Dockerfile  
+# & https://infostart.ru/public/1368214/  
+# & https://github.com/alexanderfefelov/docker-1c-server
+
 FROM ubuntu:bionic
 
 # explicitly set user/group IDs
