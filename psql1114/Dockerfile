@@ -12,7 +12,6 @@ RUN groupadd -r postgres --gid=999 && useradd -r -g postgres --uid=999 postgres
 RUN set -x apt-get update && apt-get install -y --no-install-recommends gosu gnupg && rm -rf /var/lib/apt/lists/* 
 
 # make the "ru_RU.UTF-8" locale so postgres will be utf-8 enabled by default 
-# ?????? locale-gen ru_RU.utf8, update-locale LANG=ru_RU.UTF8, dpkg-reconfigure locales  
 RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
 	&& localedef -i ru_RU -c -f UTF-8 -A /usr/share/locale/locale.alias ru_RU.UTF-8
 ENV LANG ru_RU.utf8
