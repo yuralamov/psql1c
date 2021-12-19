@@ -1,7 +1,7 @@
 # based on the
 # https://github.com/sibsau/docker-postgres-pro-1c/blob/master/9.6/Dockerfile  
 # & https://infostart.ru/public/1368214/  
-# & https://github.com/alexanderfefelov/docker-1c-server
+# & https://github.com/alexanderfefelov/docker-postgrespro-1c
 
 FROM ubuntu:bionic
 
