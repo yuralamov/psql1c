@@ -6,18 +6,7 @@ FROM ubuntu:bionic
 RUN groupadd -r postgres --gid=999 && useradd -r -g postgres --uid=999 postgres
 
 # grab gosu for easy step-down from root
-ENV GOSU_VERSION 1.7
-RUN set -x \
-	&& apt-get update && apt-get install -y --no-install-recommends ca-certificates wget && rm -rf /var/lib/apt/lists/* \
-	&& wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture)" \
-	&& wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/$GOSU_VERSION/gosu-$(dpkg --print-architecture).asc" \
-	&& export GNUPGHOME="$(mktemp -d)" \
-	&& gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-	&& gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu \
-	&& rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc \
-	&& chmod +x /usr/local/bin/gosu \
-	&& gosu nobody true \
-	&& apt-get purge -y --auto-remove ca-certificates wget
+RUN set -x apt-get update && apt-get install -y --no-install-recommends gosu && rm -rf /var/lib/apt/lists/* 
 
 # make the "ru_RU.UTF-8" locale so postgres will be utf-8 enabled by default
 RUN apt-get update && apt-get install -y locales && rm -rf /var/lib/apt/lists/* \
@@ -26,19 +15,15 @@ ENV LANG ru_RU.utf8
 
 RUN mkdir /docker-entrypoint-initdb.d
 
-RUN apt-key adv --fetch-keys http://1c.postgrespro.ru/keys/GPG-KEY-POSTGRESPRO-1C
+RUN apt-key adv --fetch-keys http://repo.postgrespro.ru/keys/GPG-KEY-POSTGRESPRO
 
-ENV PG_MAJOR 9.6
-ENV PG_VERSION 9.6.1-3.1C.jessie
+ENV PG_MAJOR 11.14
 
-RUN echo 'deb http://1c.postgrespro.ru/deb/ jessie main' > /etc/apt/sources.list.d/postgrespro-1c.list
+RUN echo 'deb http://repo.postgrespro.ru/pg1c-11/ubuntu bionic main' > /etc/apt/sources.list.d/postgrespro-1c.list
 
 RUN apt-get update \
-	&& apt-get install -y postgresql-common-pro-1c \
+	&& apt-get install -y postgrespro-1c-11-server \
 	&& sed -ri 's/#(create_main_cluster) .*$/\1 = false/' /etc/postgresql-common/createcluster.conf \
-	&& apt-get install -y \
-		postgresql-pro-1c-$PG_MAJOR=$PG_VERSION \
-		postgresql-contrib-pro-1c-$PG_MAJOR=$PG_VERSION	\	
 	&& rm -rf /var/lib/apt/lists/*
 
 # make the sample config easier to munge (and "correct by default")
