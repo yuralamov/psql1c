@@ -21,7 +21,7 @@ RUN mkdir /docker-entrypoint-initdb.d
 
 RUN apt-key adv --fetch-keys http://repo.postgrespro.ru/keys/GPG-KEY-POSTGRESPRO
 
-ENV PG_MAJOR 11.14
+ENV PG_MAJOR 1c-11
 
 RUN echo 'deb http://repo.postgrespro.ru/pg1c-11/ubuntu bionic main' > /etc/apt/sources.list.d/postgrespro-1c.list
 
@@ -31,13 +31,13 @@ RUN apt-get update \
 	&& rm -rf /var/lib/apt/lists/*
 
 # make the sample config easier to munge (and "correct by default")
-RUN mv -v /usr/share/postgresql/$PG_MAJOR/postgresql.conf.sample /usr/share/postgresql/ \
-	&& ln -sv ../postgresql.conf.sample /usr/share/postgresql/$PG_MAJOR/ \
+RUN mv -v /opt/pgpro/$PG_MAJOR/share/postgresql.conf.sample /usr/share/postgresql/ \
+	&& ln -sv ../postgresql.conf.sample /opt/pgpro/$PG_MAJOR/share/ \
 	&& sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/share/postgresql/postgresql.conf.sample
 
 RUN mkdir -p /var/run/postgresql && chown -R postgres /var/run/postgresql
 
-ENV PATH /usr/lib/postgresql/$PG_MAJOR/bin:$PATH
+ENV PATH /opt/pgpro/$PG_MAJOR/bin:$PATH
 ENV PGDATA /var/lib/postgresql/data
 VOLUME /var/lib/postgresql/data
 
